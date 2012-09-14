@@ -1,0 +1,61 @@
+<?php // $Id$
+
+
+
+
+/**
+ * Implementation of hook_image_effect_info().
+ */
+function imageeffects33_image_effect_info()
+{
+    $effects = array();
+    
+    $effects['scale_w_h_33'] = array(
+        'label' => t('Width and Height Scale'),
+        'help' => t('Scale BOTH width and height to a given percentage.'),
+        'effect callback' => 'custom_scale_33_effect',
+        'dimensions callback' => 'image_resize_dimensions',
+        'form callback' => 'custom_scale_33_form',
+        'summary theme' => 'image_resize_summary',
+    );
+    
+    return $effects;
+}
+
+
+
+/**
+ * Form callback function.
+ */
+function custom_scale_33_form($data)
+{
+    $form = image_resize_form($data);
+    
+    $form['width']['#required'] = FALSE;
+    $form['width']['#field_suffix'] = " %";
+    
+    $form['height']['#required'] = FALSE;
+    $form['height']['#field_suffix'] = " %";
+    
+    return $form;
+}
+
+
+
+function custom_scale_33_effect(&$image, $data)
+{
+  $dimensions = $image->info;
+  
+  if($data['width'])
+  {
+    $dimensions['width'] = $dimensions['width'] * $data['width'] / 100;
+  }
+  if($data['height'])
+  {
+    $dimensions['height'] = $dimensions['height'] * $data['height'] / 100;
+  }
+  
+  return image_resize($image, $dimensions['width'], $dimensions['height']);
+}
+
+

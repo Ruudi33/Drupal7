@@ -1,0 +1,5 @@
+; $Id$
+name = My Image effects
+description = none
+core = 7.x
+package = Ruudi33
